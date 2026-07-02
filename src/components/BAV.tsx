@@ -191,19 +191,21 @@ export default function BAV() {
               <div style={{ ...mono, fontSize: 10, color: C.dim }}>{members.length} member{members.length !== 1 ? "s" : ""}</div>
             </div>
 
-            {/* Avatar stack */}
-            <div style={{ display: "flex", marginBottom: 14 }}>
-              {members.slice(0, 18).map((m, i) => (
-                <div key={i} title={m.display_name} style={{ width: 30, height: 30, borderRadius: "50%", background: C.surface, color: C.text, border: `2px solid ${C.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", flexShrink: 0, marginLeft: i === 0 ? 0 : -8, zIndex: members.length - i }}>
-                  {m.initials}
-                </div>
-              ))}
-              {members.length > 18 && (
-                <div style={{ width: 30, height: 30, borderRadius: "50%", background: C.surface, color: C.muted, border: `2px solid ${C.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 600, flexShrink: 0, marginLeft: -8 }}>
-                  +{members.length - 18}
-                </div>
-              )}
-            </div>
+            {/* Avatar stack — only shown when there are more members than fit in pills */}
+            {members.length > 8 && (
+              <div style={{ display: "flex", marginBottom: 14 }}>
+                {members.slice(0, 18).map((m, i) => (
+                  <div key={i} title={m.display_name} style={{ width: 30, height: 30, borderRadius: "50%", background: C.surface, color: C.text, border: `2px solid ${C.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 400, fontFamily: "'Cormorant Garamond', serif", flexShrink: 0, marginLeft: i === 0 ? 0 : -8, zIndex: members.length - i }}>
+                    {m.initials}
+                  </div>
+                ))}
+                {members.length > 18 && (
+                  <div style={{ width: 30, height: 30, borderRadius: "50%", background: C.surface, color: C.muted, border: `2px solid ${C.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 600, flexShrink: 0, marginLeft: -8 }}>
+                    +{members.length - 18}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Recent pills */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
