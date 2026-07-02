@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, CSSProperties } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 
 const C = {
   bg:      "#F8F5F0",
@@ -41,33 +41,38 @@ const FOUNDER = {
   initials: "S",
 };
 
-const IS   = ["Build nights — ship in one session", "AI startup teardowns", "Founder AMAs, no polish", "Technical and business minds, both"];
+const IS: { strong: string; rest: string }[] = [
+  { strong: "Build nights",        rest: " — ship in one session"   },
+  { strong: "AI startup teardowns", rest: ""                        },
+  { strong: "Founder AMAs",        rest: ", no polish"             },
+  { strong: "Technical and business", rest: " minds, both"         },
+];
 const ISNT = ["CV workshops", "Networking fluff", "Panels with no output", "A society you ghost after week one"];
 
-const FAQS = [
+const FAQS: { q: string; a: React.ReactNode }[] = [
   {
     q: "Do I need to know how to code?",
-    a: "No. Half the best startup founders can't write a line of code. If you can think clearly about problems and talk to users, you belong here. Engineers need people like you.",
+    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No.</strong> Half the best startup founders can&apos;t write a line of code. If you can think clearly about problems and talk to users, you belong here. Engineers need people like you.</>,
   },
   {
     q: "What actually happens at a build night?",
-    a: "You show up, pick something to build (solo or pair up), and ship it before the night ends. Could be a landing page, a prototype, a working script. We value done over polished.",
+    a: <>You show up, pick something to build (solo or pair up), and <strong style={{ color: "#1C1814", fontWeight: 500 }}>ship it before the night ends</strong>. Could be a landing page, a prototype, a working script. We value <strong style={{ color: "#1C1814", fontWeight: 500 }}>done over polished</strong>.</>,
   },
   {
     q: "How much of a time commitment is this?",
-    a: "As much or as little as you want. One session a month is fine. There's no attendance policy — this isn't a lecture.",
+    a: <>As much or as little as you want. <strong style={{ color: "#1C1814", fontWeight: 500 }}>One session a month is fine.</strong> There&apos;s no attendance policy — this isn&apos;t a lecture.</>,
   },
   {
     q: "I'm not at Brunel, can I still join?",
-    a: "The society is Brunel-based but we don't turn away good builders. Reach out directly if you're local and interested.",
+    a: <>The society is Brunel-based but <strong style={{ color: "#1C1814", fontWeight: 500 }}>we don&apos;t turn away good builders</strong>. Reach out directly if you&apos;re local and interested.</>,
   },
   {
     q: "Is there a membership fee?",
-    a: "No fee to sign up. Some events may have a small cover for venue costs — we'll always give advance notice.",
+    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No fee to sign up.</strong> Some events may have a small cover for venue costs — we&apos;ll always give advance notice.</>,
   },
   {
     q: "What AI tools / stack will we use?",
-    a: "Whatever works. OpenAI, Claude, Cursor, v0, Replicate — bring your own stack or learn one on the night. We're tool-agnostic.",
+    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>Whatever works.</strong> OpenAI, Claude, Cursor, v0, Replicate — bring your own stack or learn one on the night. We&apos;re tool-agnostic.</>,
   },
 ];
 
@@ -149,8 +154,10 @@ export default function BAV() {
             Build real things<br /><em>with AI.</em>
           </h1>
           <p style={{ ...sans, fontSize: 16, color: C.muted, maxWidth: 420, margin: 0, lineHeight: 1.8, fontWeight: 300 }}>
-            Brunel&apos;s society for people building AI-powered products and startups.
-            Whether you write the code or the business plan — if you&apos;re serious about building, you belong here.
+            Brunel&apos;s society for people building{" "}
+            <span style={{ color: C.text, fontWeight: 400 }}>AI-powered products and startups</span>.
+            Whether you write the code or the business plan —{" "}
+            <span style={{ color: C.text, fontWeight: 400 }}>if you&apos;re serious about building, you belong here</span>.
           </p>
         </div>
 
@@ -166,7 +173,12 @@ export default function BAV() {
                 <span style={{ ...sans, fontWeight: 500, fontSize: 14, color: C.text }}>{FOUNDER.name}</span>
                 <span style={{ ...mono, fontSize: 9, color: C.muted, border: `1px solid ${C.border}`, borderRadius: 2, padding: "2px 6px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 300 }}>{FOUNDER.role}</span>
               </div>
-              <div style={{ ...mono, fontSize: 11, color: C.muted, lineHeight: 1.5, fontWeight: 300 }}>{FOUNDER.line}</div>
+              <div style={{ ...mono, fontSize: 11, color: C.muted, lineHeight: 1.5, fontWeight: 300 }}>
+                <span style={{ color: C.text }}>13x hackathon winner</span>
+                {" · "}
+                <span style={{ color: C.text }}>AI Builder Award, UK Gov</span>
+                {" · ex-YC"}
+              </div>
             </div>
           </div>
         </div>
@@ -222,7 +234,11 @@ export default function BAV() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, padding: "52px 0", borderBottom: `1px solid ${C.border}` }}>
           <div>
             <div style={{ ...TAG(), marginBottom: 16 }}>This is</div>
-            {IS.map(s => <div key={s} style={{ ...sans, fontSize: 13, color: C.text, paddingLeft: 14, marginBottom: 11, borderLeft: `1.5px solid ${C.text}`, lineHeight: 1.5 }}>{s}</div>)}
+            {IS.map(s => (
+              <div key={s.strong} style={{ ...sans, fontSize: 13, color: C.muted, paddingLeft: 14, marginBottom: 11, borderLeft: `1.5px solid ${C.text}`, lineHeight: 1.5 }}>
+                <span style={{ color: C.text, fontWeight: 500 }}>{s.strong}</span>{s.rest}
+              </div>
+            ))}
           </div>
           <div>
             <div style={{ ...TAG(), marginBottom: 16 }}>This isn&apos;t</div>
@@ -238,7 +254,8 @@ export default function BAV() {
               <div>
                 <div style={{ ...serif, fontWeight: 600, fontSize: 22, color: C.text, marginBottom: 8, lineHeight: 1.2 }}>Build Night #1</div>
                 <div style={{ ...sans, fontSize: 13, color: C.muted, lineHeight: 1.8, maxWidth: 300, fontWeight: 300 }}>
-                  Ship something in one evening. Bring an idea or find one on the night.
+                  <span style={{ color: C.text, fontWeight: 400 }}>Ship something in one evening.</span>{" "}
+                  Bring an idea or find one on the night.
                   Engineers, designers, and founders all welcome.
                 </div>
               </div>
@@ -250,14 +267,14 @@ export default function BAV() {
             </div>
             <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${C.border}`, display: "flex", gap: 28, flexWrap: "wrap" }}>
               {[
-                { label: "Format",   value: "In-person" },
-                { label: "Duration", value: "3 hours"   },
-                { label: "Cost",     value: "Free"       },
-                { label: "Output",   value: "Ship it"    },
-              ].map(({ label, value }) => (
+                { label: "Format",   value: "In-person", highlight: false },
+                { label: "Duration", value: "3 hours",   highlight: false },
+                { label: "Cost",     value: "Free",      highlight: true  },
+                { label: "Output",   value: "Ship it",   highlight: false },
+              ].map(({ label, value, highlight }) => (
                 <div key={label}>
                   <div style={{ ...TAG(), marginBottom: 5 }}>{label}</div>
-                  <div style={{ ...sans, fontSize: 13, fontWeight: 500, color: C.text }}>{value}</div>
+                  <div style={{ ...serif, fontSize: 16, fontWeight: 600, color: C.text, fontStyle: highlight ? "italic" : "normal" }}>{value}</div>
                 </div>
               ))}
             </div>
@@ -302,7 +319,8 @@ export default function BAV() {
             <>
               <div style={{ ...serif, fontSize: 26, fontWeight: 600, marginBottom: 8, color: C.text, lineHeight: 1.2 }}>Join the society</div>
               <div style={{ ...sans, fontSize: 14, color: C.muted, marginBottom: 32, lineHeight: 1.8, fontWeight: 300 }}>
-                Your first name will appear in the members list above — so your friends know you&apos;re in.
+                Your first name will appear in the members list above —{" "}
+                <span style={{ color: C.text, fontWeight: 400 }}>so your friends know you&apos;re in</span>.
               </div>
 
               {([
