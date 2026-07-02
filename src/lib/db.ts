@@ -15,15 +15,6 @@ export interface Member {
   created_at: string;
 }
 
-export interface Signup {
-  id: number;
-  name: string;
-  email: string;
-  student_id: string;
-  course: string | null;
-  created_at: string;
-}
-
 // ── Query helpers ────────────────────────────────────────────────────────────
 // Every function uses parameterized tagged-template literals.
 // No user input is ever interpolated as raw SQL.
@@ -67,33 +58,3 @@ export async function registerMember(params: {
   `;
 }
 
-export async function getSignups(): Promise<Signup[]> {
-  return (await sql`
-    SELECT id, name, email, student_id, course, created_at
-    FROM signups
-    ORDER BY created_at ASC
-  `) as Signup[];
-}
-
-// ── One-time table creation ──────────────────────────────────────────────────
-
-export async function createTablesIfNotExist() {
-  await sql`
-    CREATE TABLE IF NOT EXISTS members (
-      id          SERIAL PRIMARY KEY,
-      display_name TEXT NOT NULL,
-      initials    TEXT NOT NULL,
-      created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `;
-  await sql`
-    CREATE TABLE IF NOT EXISTS signups (
-      id          SERIAL PRIMARY KEY,
-      name        TEXT NOT NULL,
-      email       TEXT NOT NULL,
-      student_id  TEXT NOT NULL UNIQUE,
-      course      TEXT,
-      created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `;
-}
