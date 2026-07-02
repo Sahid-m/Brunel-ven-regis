@@ -11,11 +11,12 @@ html, body {
 }
 
 body {
-  background: #FFFFFF;
-  color: #0A0A0A;
-  font-family: Inter, system-ui, sans-serif;
+  background: #F8F5F0;
+  color: #1C1814;
+  font-family: 'DM Sans', system-ui, sans-serif;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 input, button {
