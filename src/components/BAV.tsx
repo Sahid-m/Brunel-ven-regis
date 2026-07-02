@@ -88,6 +88,13 @@ export default function BAV() {
   const [openFaq,   setOpenFaq]   = useState<number | null>(null);
 
   useEffect(() => {
+    // Track visit — fire-and-forget, never blocks render
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: window.location.pathname }),
+    }).catch(() => {});
+
     fetch("/api/members")
       .then(r => r.json())
       .then(data => { if (data.members) setMembers(data.members); })

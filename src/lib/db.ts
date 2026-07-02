@@ -58,3 +58,20 @@ export async function registerMember(params: {
   `;
 }
 
+export interface PageVisit {
+  ip:         string | null;
+  country:    string | null;
+  city:       string | null;
+  region:     string | null;
+  referrer:   string | null;
+  user_agent: string | null;
+  path:       string;
+}
+
+export async function recordVisit(v: PageVisit) {
+  await sql`
+    INSERT INTO page_visits (ip, country, city, region, referrer, user_agent, path)
+    VALUES (${v.ip}, ${v.country}, ${v.city}, ${v.region}, ${v.referrer}, ${v.user_agent}, ${v.path})
+  `;
+}
+
