@@ -282,7 +282,7 @@ export default function BAV() {
         </div>
 
         {/* FAQ */}
-        <div style={{ padding: "52px 0", borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ padding: "52px 0" }}>
           <div style={{ ...TAG(), marginBottom: 20 }}>FAQ</div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {FAQS.map((faq, i) => {
