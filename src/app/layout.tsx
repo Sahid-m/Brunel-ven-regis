@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Brunel AI Ventures — Join the Society",
   description:
     "Brunel's society for people building AI-powered products and startups. Build real things with AI.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
