@@ -49,36 +49,42 @@ const IS: { strong: string; rest: string }[] = [
 ];
 const ISNT = ["CV workshops", "Networking fluff", "Panels with no output", "A society you ghost after week one"];
 
-const FAQS: { q: string; a: React.ReactNode }[] = [
-  {
-    q: "Do I need to know how to code?",
-    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No.</strong> Half the best startup founders can&apos;t write a line of code. If you can think clearly about problems and talk to users, you belong here. Engineers need people like you.</>,
-  },
-  {
-    q: "What actually happens at a build night?",
-    a: <>You show up, pick something to build (solo or pair up), and <strong style={{ color: "#1C1814", fontWeight: 500 }}>ship it before the night ends</strong>. Could be a landing page, a prototype, a working script. We value <strong style={{ color: "#1C1814", fontWeight: 500 }}>done over polished</strong>.</>,
-  },
-  {
-    q: "How much of a time commitment is this?",
-    a: <>As much or as little as you want. <strong style={{ color: "#1C1814", fontWeight: 500 }}>One session a month is fine.</strong> There&apos;s no attendance policy — this isn&apos;t a lecture.</>,
-  },
-  {
-    q: "I'm not at Brunel, can I still join?",
-    a: <>The society is Brunel-based but <strong style={{ color: "#1C1814", fontWeight: 500 }}>we don&apos;t turn away good builders</strong>. Reach out directly if you&apos;re local and interested.</>,
-  },
-  {
-    q: "Is there a membership fee?",
-    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No fee to sign up.</strong> Some events may have a small cover for venue costs — we&apos;ll always give advance notice.</>,
-  },
-  {
-    q: "What AI tools / stack will we use?",
-    a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>Whatever works.</strong> OpenAI, Claude, Cursor, v0, Replicate — bring your own stack or learn one on the night. We&apos;re tool-agnostic.</>,
-  },
-];
+const UNI_NAMES: Record<string, string> = {
+  brunel: "Brunel",
+  cardiff: "Cardiff",
+};
 
 interface Member { display_name: string; initials: string; created_at: string }
 
-export default function BAV() {
+export default function BAV({ university = "brunel" }: { university?: string }) {
+  const uniName = UNI_NAMES[university] ?? university;
+
+  const FAQS: { q: string; a: React.ReactNode }[] = [
+    {
+      q: "Do I need to know how to code?",
+      a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No.</strong> Half the best startup founders can&apos;t write a line of code. If you can think clearly about problems and talk to users, you belong here. Engineers need people like you.</>,
+    },
+    {
+      q: "What actually happens at a build night?",
+      a: <>You show up, pick something to build (solo or pair up), and <strong style={{ color: "#1C1814", fontWeight: 500 }}>ship it before the night ends</strong>. Could be a landing page, a prototype, a working script. We value <strong style={{ color: "#1C1814", fontWeight: 500 }}>done over polished</strong>.</>,
+    },
+    {
+      q: "How much of a time commitment is this?",
+      a: <>As much or as little as you want. <strong style={{ color: "#1C1814", fontWeight: 500 }}>One session a month is fine.</strong> There&apos;s no attendance policy — this isn&apos;t a lecture.</>,
+    },
+    {
+      q: `I'm not at ${uniName}, can I still join?`,
+      a: <>The society is {uniName}-based but <strong style={{ color: "#1C1814", fontWeight: 500 }}>we don&apos;t turn away good builders</strong>. Reach out directly if you&apos;re local and interested.</>,
+    },
+    {
+      q: "Is there a membership fee?",
+      a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>No fee to sign up.</strong> Some events may have a small cover for venue costs — we&apos;ll always give advance notice.</>,
+    },
+    {
+      q: "What AI tools / stack will we use?",
+      a: <><strong style={{ color: "#1C1814", fontWeight: 500 }}>Whatever works.</strong> OpenAI, Claude, Cursor, v0, Replicate — bring your own stack or learn one on the night. We&apos;re tool-agnostic.</>,
+    },
+  ];
   const [members,   setMembers]   = useState<Member[]>([]);
   const [loaded,    setLoaded]    = useState(false);
   const [form,      setForm]      = useState({ name: "", sid: "", email: "", course: "" });
@@ -161,7 +167,7 @@ export default function BAV() {
             Build real things<br /><em>with AI.</em>
           </h1>
           <p style={{ ...sans, fontSize: 16, color: C.muted, maxWidth: 420, margin: 0, lineHeight: 1.8, fontWeight: 300 }}>
-            Brunel&apos;s society for people building{" "}
+            {uniName}&apos;s society for people building{" "}
             <span style={{ color: C.text, fontWeight: 400 }}>AI-powered products and startups</span>.
             Whether you write the code or the business plan —{" "}
             <span style={{ color: C.text, fontWeight: 400 }}>if you&apos;re serious about building, you belong here</span>.
@@ -271,7 +277,7 @@ export default function BAV() {
               <div style={{ textAlign: "right", flexShrink: 0 }}>
                 <div style={{ ...TAG(), marginBottom: 6 }}>Date</div>
                 <div style={{ ...sans, fontWeight: 500, fontSize: 14, color: C.text }}>TBC — Term 1</div>
-                <div style={{ ...mono, fontSize: 10, color: C.muted, marginTop: 4, fontWeight: 300 }}>Brunel University London</div>
+                <div style={{ ...mono, fontSize: 10, color: C.muted, marginTop: 4, fontWeight: 300 }}>{uniName} University</div>
               </div>
             </div>
             <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${C.border}`, display: "flex", gap: 28, flexWrap: "wrap" }}>
@@ -335,7 +341,7 @@ export default function BAV() {
               {([
                 { label: "Full name",          key: "name"   as const, type: "text",  ph: "Your name",               required: true  },
                 { label: "Student ID",          key: "sid"    as const, type: "text",  ph: "e.g. 2234567",            required: true  },
-                { label: "Email",               key: "email"  as const, type: "email", ph: "you@brunel.ac.uk",        required: true  },
+                { label: "Email",               key: "email"  as const, type: "email", ph: `you@${university}.ac.uk`, required: true  },
                 { label: "Course / Department", key: "course" as const, type: "text",  ph: "e.g. Business, CS, MBA…", required: false },
               ]).map(f => (
                 <div key={f.key} style={{ marginBottom: 18 }}>
@@ -370,7 +376,7 @@ export default function BAV() {
 
       {/* Footer */}
       <div style={{ borderTop: `1px solid ${C.border}`, padding: "20px 28px" }}>
-        <span style={{ ...mono, fontSize: 10, color: C.dim, fontWeight: 300, letterSpacing: "0.1em" }}>BRUNEL AI VENTURES · {new Date().getFullYear()}</span>
+        <span style={{ ...mono, fontSize: 10, color: C.dim, fontWeight: 300, letterSpacing: "0.1em" }}>{uniName.toUpperCase()} AI VENTURES · {new Date().getFullYear()}</span>
       </div>
 
     </div>
