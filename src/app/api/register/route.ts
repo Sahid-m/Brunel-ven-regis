@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isStudentIdTaken, registerMember } from "@/lib/db";
 
+// In-memory rate limiter — 5 submissions per IP per 15 minutes.
+// Resets on cold start; acceptable for this scale.
+const rl = new Map<string, { count: number; resetAt: number }>();
+function allowed(ip: string): boolean {
+  const now = Date.now();
+  const entry = rl.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rl.set(ip, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    return true;
+  }
+  if (entry.count >= 5) return false;
+  entry.count++;
+  return true;
+}
+
 function displayName(name: string) {
   const p = name.trim().split(/\s+/);
   return p.length === 1 ? p[0] : p[0] + " " + p[p.length - 1][0] + ".";
@@ -29,6 +44,11 @@ function validate(body: Record<string, unknown>) {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  if (!allowed(ip)) {
+    return NextResponse.json({ error: "Too many submissions. Please try again later." }, { status: 429 });
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
