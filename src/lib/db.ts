@@ -50,13 +50,14 @@ export async function registerMember(params: {
 }) {
   const { name, displayName, initials, email, studentId, course } = params;
   const u = getUniversity();
-  await sql`
-    INSERT INTO members (display_name, initials, university)
-    VALUES (${displayName}, ${initials}, ${u})
-  `;
+  // signups first — if this fails (e.g. constraint violation), members is never touched
   await sql`
     INSERT INTO signups (name, email, student_id, course, university)
     VALUES (${name}, ${email}, ${studentId}, ${course || null}, ${u})
+  `;
+  await sql`
+    INSERT INTO members (display_name, initials, university)
+    VALUES (${displayName}, ${initials}, ${u})
   `;
 }
 
